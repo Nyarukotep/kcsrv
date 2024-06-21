@@ -1,0 +1,2 @@
+# kcsrv
+Make Kancolle offline
