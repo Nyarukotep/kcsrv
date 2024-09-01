@@ -1,0 +1,44 @@
+[server]
+host = "localhost"
+port = 6655
+# backlog = 1024
+
+[server.http]
+keep-alive.max = 32
+keep-alive.timeout = 5
+websocket = true
+
+[server.websocket]
+
+[logging]
+version = 1
+disable_existing_loggers = false
+
+[logging.formatters]
+simple.format = "%(levelname)s: %(message)s"
+detail.format = "[%(levelname)s|%(module)s|L%(lineno)d] %(asctime)s: %(message)s"
+detail.datefmt = "%Y-%m-%dT%H:%M:%S%z"
+
+[logging.handlers.StreamHandler]
+class = "logging.StreamHandler"
+level = "INFO"
+formatter = "simple"
+stream = "ext://sys.stdout"
+
+[logging.handlers.FileHandler]
+class = "logging.handlers.TimedRotatingFileHandler"
+level = "DEBUG"
+formatter = "detail"
+filename = "log/ksrv.log"
+when = "midnight"
+utc = false
+backupCount = 30
+
+[logging.handlers.QueueHandler]
+class = "logging.handlers.QueueHandler"
+handlers = ["StreamHandler", "FileHandler"]
+respect_handler_level = true
+
+[logging.loggers.root]
+level = "DEBUG"
+handlers = ["QueueHandler"]
